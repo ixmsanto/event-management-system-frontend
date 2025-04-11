@@ -1,8 +1,10 @@
+/* frontend/app/globals.css */
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ffffff; /* White - unchanged */
+  --foreground: #171717; /* Dark gray - unchanged */
 }
 
 @theme inline {
@@ -15,7 +17,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #a52396; /* Softer light gray */
   }
 }
 

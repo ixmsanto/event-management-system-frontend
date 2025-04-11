@@ -1,3 +1,6 @@
+// frontend/components/EventForm.tsx
+// This file contains the EventForm component which is used to create or update events.
+
 import React, { useState } from 'react';
 
 interface EventFormProps {
@@ -31,11 +34,19 @@ export default function EventForm({ event, onSubmit }: EventFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (new Date(startTime) >= new Date(endTime)) {
-      setError('Start time must be before end time');
+    const errors: string[] = [];
+    if (!title) errors.push("Title is required");
+    if (!description) errors.push("Description is required");
+    if (!startTime) errors.push("Start time is required");
+    if (!endTime) errors.push("End time is required");
+    if (!location) errors.push("Location is required");
+    if (!category) errors.push("Category is required");
+    if (new Date(startTime) >= new Date(endTime)) errors.push("Start time must be before end time");
+    if (errors.length) {
+      setError(errors.join(", "));
       return;
     }
-    setError('');
+    setError("");
     onSubmit({ title, description, start_time: startTime, end_time: endTime, location, category });
   };
 

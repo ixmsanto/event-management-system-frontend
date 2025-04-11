@@ -1,3 +1,6 @@
+// frontend/app/events/new/page.tsx
+// for creating a new event
+
 "use client";
 
 import React from 'react';
@@ -11,21 +14,19 @@ export default function CreateEvent() {
 
   const handleSubmit = async (data: any) => {
     try {
-      const response = await fetch('http://localhost:8000/api/events', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await fetch("http://localhost:8000/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(data),
       });
-      if (response.ok) {
-        router.push('/dashboard');
-      } else {
-        alert('Failed to create event');
+      if (response.status === 401) {
+        logout();
+        return;
       }
+      if (response.ok) router.push("/dashboard");
+      else alert("Failed to create event");
     } catch (err) {
-      alert('An error occurred');
+      alert("An error occurred");
     }
   };
 
@@ -37,4 +38,8 @@ export default function CreateEvent() {
       </div>
     </div>
   );
+}
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = '/login';
 }

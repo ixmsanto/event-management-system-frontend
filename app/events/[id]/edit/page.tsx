@@ -1,3 +1,6 @@
+// frontend/app/events/[id]/edit/page.tsx
+// for editing an event
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../../hooks/useAuth';
 import EventForm from '../../../../components/EventForm';
@@ -18,41 +21,42 @@ export default function EditEvent() {
     }
   }, [id, token]);
 
+  const handleSubmit = async (data: any) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/events/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(data),
+      });
+      if (response.status === 401) {
+        logout();
+        return;
+      }
+      if (response.ok) router.push("/dashboard");
+      else alert("Failed to update event");
+    } catch (err) {
+      alert("An error occurred");
+    }
+  };
   const fetchEvent = async () => {
     try {
       const response = await fetch(`http://localhost:8000/api/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (response.status === 401) {
+        logout();
+        return;
+      }
       if (response.ok) {
         const data = await response.json();
         setEvent(data);
       } else {
-        setError('Failed to fetch event');
+        setError("Failed to fetch event");
       }
     } catch (err) {
-      setError('An error occurred');
+      setError("An error occurred");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSubmit = async (data: any) => {
-    try {
-      const response = await fetch(`http://localhost:8000/api/events/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        router.push('/dashboard');
-      } else {
-        alert('Failed to update event');
-      }
-    } catch (err) {
-      alert('An error occurred');
     }
   };
 
@@ -88,4 +92,8 @@ export default function EditEvent() {
       </div>
     </div>
   );
+}
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = '/login';
 }

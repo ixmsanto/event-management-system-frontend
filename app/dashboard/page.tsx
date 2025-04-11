@@ -1,4 +1,5 @@
 // frontend/app/dashboard/page.tsx
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -20,21 +21,28 @@ export default function Dashboard() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
 
   useEffect(() => {
     if (token) {
       fetchEvents();
     }
-  }, [token]);
+  }, [token, page]);
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/events", {
+      const response = await fetch(`http://localhost:8000/api/events?page=${page}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (response.status === 401) {
+        logout(); // Handle session expiration
+        return;
+      }
       if (response.ok) {
-        const data = await response.json();
+        const { data, last_page } = await response.json();
         setEvents(data);
+        setLastPage(last_page);
       } else {
         setError("Failed to fetch events");
       }
@@ -52,6 +60,10 @@ export default function Dashboard() {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
+        if (response.status === 401) {
+          logout();
+          return;
+        }
         if (response.ok) {
           setEvents(events.filter((event) => event.id !== id));
         } else {
@@ -104,12 +116,8 @@ export default function Dashboard() {
             <div key={event.id} className="bg-white p-6 rounded-lg shadow-lg">
               <h2 className="text-xl font-semibold mb-2">{event.title}</h2>
               <p className="text-gray-700 mb-2">{event.description}</p>
-              <p className="text-gray-600">
-                Start: {new Date(event.start_time).toLocaleString()}
-              </p>
-              <p className="text-gray-600">
-                End: {new Date(event.end_time).toLocaleString()}
-              </p>
+              <p className="text-gray-600">Start: {new Date(event.start_time).toLocaleString()}</p>
+              <p className="text-gray-600">End: {new Date(event.end_time).toLocaleString()}</p>
               <p className="text-gray-600">Location: {event.location}</p>
               <p className="text-gray-600">Category: {event.category}</p>
               <div className="mt-4 flex gap-4">
@@ -128,6 +136,23 @@ export default function Dashboard() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-4 flex justify-between">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="bg-gray-500 text-white px-4 py-2 rounded-lg disabled:bg-gray-300"
+          >
+            Previous
+          </button>
+          <span>Page {page} of {lastPage}</span>
+          <button
+            onClick={() => setPage((p) => Math.min(lastPage, p + 1))}
+            disabled={page === lastPage}
+            className="bg-gray-500 text-white px-4 py-2 rounded-lg disabled:bg-gray-300"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
