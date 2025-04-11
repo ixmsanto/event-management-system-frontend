@@ -27,7 +27,7 @@ This is the **frontend** of a Mini Event Management System built with **Next.js*
 
 - **Node.js** (v18.x or higher)  
 - **Backend API** running at [`http://localhost:8000`](http://localhost:8000)  
-  👉 [Backend Repository](https://github.com/your-username/event-management-backend)
+  👉 [Backend Repository](https://github.com/ixmsanto/event-management-system-backend.git)
 
 ---
 
@@ -35,7 +35,7 @@ This is the **frontend** of a Mini Event Management System built with **Next.js*
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/event-management-frontend.git
+   git clone https://github.com/ixmsanto/event-management-system-frontend.git
    cd event-management-frontend
 2. **Install Dependencies**
    ```bash
