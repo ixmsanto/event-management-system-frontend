@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎉 Event Management System - Frontend
 
-## Getting Started
+This is the **frontend** of a Mini Event Management System built with **Next.js**, **React**, and **Tailwind CSS**. It provides a seamless user interface to register, log in, and manage events (create, edit, delete, and list) via a Laravel API backend.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- 🔐 **Authentication**: Register and log in via Laravel API
+- 📋 **Dashboard**: Paginated list of events with full CRUD functionality
+- 📝 **Event Management**: Create and edit events with client-side validation
+- ⚛️ **State Management**: React Context (`AuthContext`) to manage authentication
+- 💡 **UX Enhancements**: Loading indicators, error handling, session timeout, logout
+
+---
+
+## 🛠 Tech Stack
+
+- **Next.js** – React framework for SSR and routing  
+- **React** – Component-based UI library  
+- **Tailwind CSS** – Utility-first CSS framework  
+- **TypeScript** – Strongly-typed JavaScript
+
+---
+
+## 📦 Prerequisites
+
+- **Node.js** (v18.x or higher)  
+- **Backend API** running at [`http://localhost:8000`](http://localhost:8000)  
+  👉 [Backend Repository](https://github.com/your-username/event-management-backend)
+
+---
+
+## ⚙️ Setup Instructions
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/event-management-frontend.git
+   cd event-management-frontend
+2. **Install Dependencies**
+   ```bash
+   npm install
+### 3. Configure Environment
+
+- The frontend assumes your backend API is running at:  
+  `http://localhost:8000`
+- If your backend is hosted elsewhere, update the API URLs in the code accordingly.
+
+---
+
+### 4. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 5. Open in Browser
+Navigate to http://localhost:3000 to view the app
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📱 Usage
 
-## Learn More
+| Page         | Path              | Description                               |
+|--------------|-------------------|-------------------------------------------|
+| Register     | `/register`       | Create a new account                      |
+| Login        | `/login`          | Log in with your credentials              |
+| Dashboard    | `/dashboard`      | View and manage your events               |
+| Create Event | `/events/create`  | Add a new event                           |
+| Edit Event   | `/events/edit/:id`| Edit an existing event                    |
 
-To learn more about Next.js, take a look at the following resources:
+- ✅ **Validation**: `start_time` must be before `end_time` when creating or editing events  
+- 🗑 **Delete**: Remove events directly from the dashboard  
+- 🔐 **Logout**: Clears session and redirects to login  
+- ⚠️ **Session Expiry**: Automatically logs out on 401 Unauthorized
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Project Structure
 
-## Deploy on Vercel
+```plaintext
+event-management-frontend/
+├── app/                # Next.js routes and pages
+│   ├── dashboard/      # Dashboard page
+│   ├── events/         # Create/Edit event pages
+│   ├── login/          # Login page
+│   └── register/       # Registration page
+├── components/         # Reusable React components (e.g., EventForm)
+├── contexts/           # AuthContext for managing auth state
+├── hooks/              # Custom hooks (e.g., useAuth)
+├── public/             # Static assets
+├── styles/             # Tailwind and global CSS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔄 Pagination
+Events are displayed 10 per page
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Uses the backend API’s ?page= query parameter for pagination
+
+## 🙌 Contributing
+Contributions are welcome!
+Feel free to fork, open issues, or submit pull requests.

@@ -1,6 +1,8 @@
 // frontend/app/events/[id]/edit/page.tsx
 // for editing an event
 
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../../hooks/useAuth';
 import EventForm from '../../../../components/EventForm';
