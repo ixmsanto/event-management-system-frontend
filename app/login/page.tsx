@@ -1,34 +1,43 @@
 "use client";
 
-import React, { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import Link from "next/link";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      console.log("Sending login request:", { email, password });
+      const response = await fetch("http://localhost:8000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+      console.log("Response status:", response.status);
+      console.log(
+        "Response headers:",
+        Object.fromEntries(response.headers.entries())
+      );
       const data = await response.json();
+      console.log("Response data:", data);
       if (response.ok) {
+        console.log("Login successful, token:", data.token);
         login(data.token);
       } else {
-        setError(data.message || 'Login failed');
+        setError(data.message || `Login failed (Status: ${response.status})`);
       }
-    } catch (err) {
-      setError('An error occurred');
+    } catch (err: any) {
+      console.error("Fetch error:", err.message);
+      setError(`Network error: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -65,11 +74,11 @@ export default function Login() {
             disabled={loading}
             className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 disabled:bg-blue-300"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p className="mt-4 text-center">
-          Don’t have an account?{' '}
+          Don’t have an account?{" "}
           <Link href="/register" className="text-blue-500 hover:underline">
             Register
           </Link>
