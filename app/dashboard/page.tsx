@@ -1,3 +1,4 @@
+// frontend/app/dashboard/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -15,7 +16,7 @@ interface Event {
 }
 
 export default function Dashboard() {
-  const { token, logout } = useAuth();
+  const { token, logout, isLoading: authLoading } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -62,7 +63,7 @@ export default function Dashboard() {
     }
   };
 
-  if (loading) {
+  if (authLoading || (token && loading)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <p>Loading...</p>
